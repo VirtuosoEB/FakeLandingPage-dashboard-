@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <h1>
+    Dashboard
+  </h1>
+  <div id="phonePreview"><iframe id="content" src="./previews/preview.html">
+  </iframe>
+  </div>
+  
+  
+  <!-- popups -->
+
+  <!-- Text Popup-->
+  <div id="textPopup">
+    <p>Font size:</p>
+    <input type="number" min="0" max="100" step="1" id="tPFS" value="16">
+    
+    <p>Color:</p>
+    <input type="color" id="colorPicker" value="#ff0000">
+    <input type="text" id="colorHex" value="#ff0000">
+    <button id="confirm">
+      confirm
+    </button>
+  </div>
+  
+  <div id="backgroundPopup">
+    <p>Color:</p>
+    <input type="color" id="bColorPicker" value="#ff0000">
+    <input type="text" id="bColorHex" value="#ff0000">
+    <button id="bConfirm">
+      confirm
+    </button>
+  </div>
+  
+  <script type="module" src="dashboard.js"></script>
+</body>
+
+</html>

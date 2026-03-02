@@ -1,5 +1,5 @@
 // login/main.js
-import { supabase } from "../modules/supabaseClient.js";
+import { supabase } from "./modules/supabaseClient.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("Hello World!");

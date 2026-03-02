@@ -5,6 +5,7 @@ export function displayPopup(popupId){
 }
 export function hidePopup(popupId){
   const pId = document.getElementById(popupId);
+  console.log(pId)
   pId.style.display = "none";
 }
 

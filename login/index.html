@@ -11,28 +11,37 @@
   
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./login.css">
 </head>
 
 <body>
-  
-  <h2>Sign Up</h2>
-  <form id="signupForm">
-    <input name="email" type="email" required placeholder="Email">
-    <input name="password" type="password" required placeholder="Password">
-    <button>Sign Up</button>
-  </form>
+  <section id="container">
+    <div>
+      <form id="signupForm">
+        <h2>Sign Up</h2>
+        <input name="email" type="email" required placeholder="Email">
+        <input name="password" type="password" required placeholder="Password">
+        <button class="submission">Sign Up</button>
+      </form>
+    </div>
 
-  <h2>Log In</h2>
-  <form id="loginForm">
-    <input name="email" type="email" required placeholder="Email">
-    <input name="password" type="password" required placeholder="Password">
-    <button>Log In</button>
-  </form>
+<div id="divider"></div>
+
+    <div>
+      <form id="loginForm">
+        <h2>Log In</h2>
+        <input name="email" type="email" required placeholder="Email">
+        <input name="password" type="password" required placeholder="Password">
+        <button id="resetBtn">Forgot Password?</button>
+        <button class="submission">Log In</button>
+      </form>
+    </div>
+  </section>
 
   <button id="logoutBtn">Log Out</button>
-  <button id="resetBtn">Forgot Password?</button>
+  
 
   <script type="module" src="./main.js"></script>
+
 </body>
 </html>

@@ -1,55 +1,81 @@
-console.log('Hello World!');
-// main.js
-import { signUp, logIn, logOut, resetPassword} from "../modules/auth.js";
-import { auth } from "../modules/firebase.js";
-import {onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+// login/main.js
+import { supabase } from "../modules/supabaseClient.js";
 
-onAuthStateChanged(auth, (user) => {
-  if (user){
-    console.log("logged in");
-    if (window.location.pathname.endsWith("index.html")){
-      window.location.href = "../dashboard.html"
+document.addEventListener("DOMContentLoaded", async () => {
+  console.log("Hello World!");
+
+  // --- Check if user is already logged in ---
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    console.log("Already logged in:", user.email);
+    if (window.location.pathname.endsWith("index.html")) {
+      window.location.href = "../dashboard.html";
     }
   }
-  
-  else{
-    console.log("logged out")
+
+  // --- Monitor auth state ---
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (session?.user) {
+      console.log("logged in");
+      if (window.location.pathname.endsWith("index.html")) {
+        window.location.href = "../dashboard.html";
+      }
+    } else {
+      console.log("logged out");
+    }
+  });
+
+  // --- Signup ---
+  const signupForm = document.getElementById("signupForm");
+  if (signupForm) {
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) alert(error.message);
+      else alert("Signed up: " + data.user.email);
+    });
   }
-});
 
-document.getElementById("signupForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = e.target.email.value;
-  const password = e.target.password.value;
-  try {
-    const userCred = await signUp(email, password);
-    alert("Signed up: " + userCred.user.email);
-  } catch (err) {
-    alert(err.message);
+  // --- Login ---
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) alert(error.message);
+      else alert("Logged in: " + data.user.email);
+    });
   }
-});
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = e.target.email.value;
-  const password = e.target.password.value;
-  try {
-    const userCred = await logIn(email, password);
-    alert("Logged in: " + userCred.user.email);
-  } catch (err) {
-    alert(err.message);
+  // --- Logout ---
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) alert(error.message);
+      else alert("Logged out!");
+    });
   }
-});
 
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  logOut();
-  alert("Logged out!");
-});
+  // --- Password reset ---
+  const resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", async () => {
+      const email = prompt("Enter your email for password reset:");
+      if (!email) return;
 
-document.getElementById("resetBtn").addEventListener("click", () => {
-  const email = prompt("Enter your email for password reset:");
-  if (!email) return;
-  resetPassword(email)
-    .then(() => alert("Reset email sent!"))
-    .catch(err => alert(err.message));
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + "/reset-password.html",
+      });
+
+      if (error) alert(error.message);
+      else alert("Reset email sent!");
+    });
+  }
 });

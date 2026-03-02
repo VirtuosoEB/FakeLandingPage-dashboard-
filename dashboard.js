@@ -1,86 +1,78 @@
-import {displayPopup, hidePopup, rgbToHex} from "./modules/popup.js";
 
-// Elements
+import { syncColorPicker } from "./modules/colorsync.js";
+import { setupIframeClick } from "./modules/iframeHandler.js";
+import { applyTextStyle, applyBackgroundStyle, applyButtonStyle} from "./modules/styleApplier.js";
+import { displayPopup, hidePopup, rgbToHex } from "./modules/popup.js";
+import { resizeIframe } from "./modules/iframe.js";
+import { storeChanges, applyChanges, loadChanges} from "./modules/store.js";
+
+//===Elements======================================
+const preview = document.getElementById("content");
+
+  //text popup
 const tPFS = document.getElementById("tPFS");
 const picker = document.getElementById('colorPicker');
 const hexInput = document.getElementById('colorHex');
-const bPicker = document.getElementById('bColorPicker');
-const bHexInput = document.getElementById('bColorHex');
 const confirm = document.getElementById("confirm");
+const cancel = document.getElementById("cancel");
+
+
+  //background popup
+const bHexInput = document.getElementById('bColorHex');
+const bPicker = document.getElementById('bColorPicker');
 const bConfirm = document.getElementById("bConfirm");
-const preview = document.getElementById("content");
+const bCancel = document.getElementById("bCancel");
 
-let selectedElement = null; // Track the clicked element in iframe
-let previewBody = null;
 
-// Sync color picker ↔ hex input (text)
-picker.addEventListener('input', () => {
-  hexInput.value = picker.value;
+  //button popup
+const btnTPFS = document.getElementById("btnTPFS");
+const btnPicker = document.getElementById('btnColorPicker');
+const btnHexInput = document.getElementById('btnColorHex');
+const btnBPicker = document.getElementById('btnBColorPicker');
+const btnBHexInput = document.getElementById('btnBColorHex');
+const btnConfirm = document.getElementById("btnConfirm");
+const btnCancel = document.getElementById("btnCancel");
+//===================================================
+
+// Sync color pickers
+syncColorPicker(picker, hexInput);
+syncColorPicker(bPicker, bHexInput);
+syncColorPicker(btnPicker, btnHexInput);
+syncColorPicker(btnBPicker, btnBHexInput); 
+
+// Setup iframe click detection
+const { getSelected, getBody } = setupIframeClick(preview, tPFS, picker, bPicker, bHexInput, btnTPFS, btnPicker, btnHexInput, btnBPicker, btnBHexInput);
+
+// Event listeners for applying styles
+confirm.addEventListener("click", () => applyTextStyle(getSelected(), tPFS, picker, "textPopup"));
+bConfirm.addEventListener("click", () => applyBackgroundStyle(getSelected(), getBody(), bPicker, "backgroundPopup"));
+btnConfirm.addEventListener("click", () => applyButtonStyle(getSelected(), btnTPFS, btnPicker, btnBPicker, "btnPopup"));
+
+// Event liseners for canceling stylechange
+cancel.addEventListener("click", () => hidePopup("textPopup"));
+bCancel.addEventListener("click", () => hidePopup("backgroundPopup"));
+btnCancel.addEventListener("click", () => hidePopup("btnPopup"));
+
+// Saving changes to local storage
+let saveButton = document.getElementById("saveButton");
+saveButton.addEventListener("click", storeChanges);
+console.log("loaded");
+
+async function init() {
+  await loadChanges();
+  await applyChanges(preview);
+}
+
+init();
+
+console.log(preview);
+
+const iframe = document.getElementById("content");
+
+console.log("iframe exists?", !!iframe);
+iframe.addEventListener("load", () => {
+  console.log("iframe loaded");
 });
-
-hexInput.addEventListener('input', () => {
-  if(/^#([0-9A-Fa-f]{6})$/.test(hexInput.value)) {
-    picker.value = hexInput.value;
-  }
-});
-// Sync color picker ↔ hex input (text)
-bPicker.addEventListener('input', () => {
-  bHexInput.value = bPicker.value;
-});
-
-bHexInput.addEventListener('input', () => {
-  if(/^#([0-9A-Fa-f]{6})$/.test(bHexInput.value)) {
-    bPicker.value = bHexInput.value;
-  }
-});
+console.log("iframe src:", iframe.src);
 
 
-
-// When iframe loads
-preview.onload = function() {
-  
-  const previewDoc = preview.contentWindow.document;
-  previewBody = previewDoc.body;
-  
-  // Detect clicks inside iframe
- previewDoc.addEventListener("click", (event) => {
-   console.log(event.target.tagName)
-  if (event.target.tagName === "H1") {
-    selectedElement = event.target;
-    displayPopup("textPopup");
-
-    //font size
-    const computedSize = preview.contentWindow.getComputedStyle(event.target).fontSize;
-    const computedColor = preview.contentWindow.getComputedStyle(event.target).color
-
-    tPFS.value = parseInt(computedSize, 10);
-    hexInput.value = rgbToHex(computedColor)
-    picker.value = rgbToHex(computedColor)
-
-    console.log("Preset font size:", computedSize);
-  } else if (event.target.tagName === "SECTION") {
-    selectedElement = event.target;
-    displayPopup("backgroundPopup");
-    
-    const bComputedColor = preview.contentWindow.getComputedStyle(event.target).backgroundColor;
-bHexInput.value = rgbToHex(bComputedColor);
-bPicker.value = rgbToHex(bComputedColor);
-  };
-});
-};
-
-// Confirm button applies changes
-confirm.addEventListener("click", () => {
-  if (selectedElement) {
-    selectedElement.style.fontSize = String(tPFS.value) + "px";
-    selectedElement.style.color = picker.value;
-    resizeIframe(); // update iframe size after change
-  }
-});
-
-bConfirm.addEventListener("click", () => {
-  if (selectedElement) {
-    selectedElement.style.backgroundColor = bPicker.value;
-    previewBody.style.backgroundColor = bPicker.value;
-  }
-});

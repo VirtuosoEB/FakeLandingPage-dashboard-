@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (user) {
     console.log("Already logged in:", user.email);
     if (window.location.pathname.endsWith("index.html")) {
-      window.location.href = "../dashboard.html";
+      window.location.href = "dashboard.html";
     }
   }
 
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (session?.user) {
       console.log("logged in");
       if (window.location.pathname.endsWith("index.html")) {
-        window.location.href = "../dashboard.html";
+        window.location.href = "dashboard.html";
       }
     } else {
       console.log("logged out");

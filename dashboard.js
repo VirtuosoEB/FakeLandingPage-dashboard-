@@ -7,6 +7,8 @@ import { resizeIframe } from "./modules/iframe.js";
 import { storeChanges, applyChanges, loadChanges} from "./modules/store.js";
 
 //===Elements======================================
+console.log(new URL("./dashboard.html", window.location.href).href)
+
 const preview = document.getElementById("content");
 
   //text popup

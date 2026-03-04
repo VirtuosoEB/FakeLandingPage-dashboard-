@@ -17,9 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   supabase.auth.onAuthStateChange((event, session) => {
     if (session?.user) {
       console.log("logged in");
-      if (window.location.pathname.endsWith("index.html")) {
         window.location.href = "./dashboard.html";
-      }
     } else {
       console.log("logged out");
     }

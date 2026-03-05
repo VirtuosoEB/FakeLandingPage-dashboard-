@@ -14,7 +14,7 @@ export function applyTextStyle(selectedElement, fontSizeInput, colorPicker, popu
     let changes = {
       fontSize: newFontSize, 
       color: newColor,
-      text: selectedElement.textContent
+      text: selectedElement.innerText
     };
 
     saveChange(selectedElement.id, 'text', changes);
@@ -59,7 +59,7 @@ export function applyButtonStyle(selectedElement, fontSizeInput, colorPicker, bg
       fontSize: fontSizeInput.value,
       backgroundColor: bgPicker.value,
       color: colorPicker.value, 
-      text: selectedElement.textContent
+      text: selectedElement.innerText
     };
 
     saveChange(selectedElement.id, 'button', changes);

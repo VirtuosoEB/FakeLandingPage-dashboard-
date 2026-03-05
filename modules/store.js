@@ -143,13 +143,13 @@ export function applyChanges(preview) {
         element.style.color = change.changes.color;
         console.log(change.color);
         element.style.fontSize = change.changes.fontSize;
-        element.textContent = change.changes.text;
+        element.innerText = change.changes.text;
         break;
       case "button":
         element.style.color = change.changes.color;
         element.style.fontSize = change.changes.fontSize;
         element.style.backgroundColor = change.changes.backgroundColor;
-        element.textContent = change.changes.text;
+        element.innerText = change.changes.text;
         break;
     }
   });

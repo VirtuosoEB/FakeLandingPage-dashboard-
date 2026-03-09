@@ -1,0 +1,119 @@
+body {
+    font-size: 15pt;
+    margin: 0;
+    background-color: black;
+}
+h1{
+    text-align: center;
+    color: #f5f5dc;
+    font-family: 'Poppins', sans-serif;
+}
+#saveButton{
+    position: absolute;
+    width: 50%;
+    left: 25%;
+    top:65%;
+    background-color: #00aeef;
+    color: #000000; /* High contrast black text for readability */
+    border: none;
+    border-radius: 12px;
+    padding: 15px 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+button:hover{
+    transform: scale(1.05); /* Interactive "pop" for your portfolio */
+  filter: brightness(1.1);
+}
+
+#phonePreview {
+    margin-left: 25%;
+    width: 187px;               /* typical phone width */
+    aspect-ratio: 375/667;      /* height automatically adjusts */
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#phonePreview iframe {
+    width: 375px;
+    aspect-ratio: 375/667;
+    transform: scale(0.5);
+    transform-origin: top left;
+    border: none;
+    
+}
+iframe{
+    overflow-x: hidden;
+}
+
+#overlay{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    display: none;
+}
+
+#colorPopup{
+    background-color: #CA2C63;
+    width: 80%;
+    height: auto;
+    padding: 5px;
+    display: none;
+}
+#textPopup{
+    background-color: grey;
+    width: 80%;
+    height: auto;
+    padding: 5px;
+    display: none;
+    position: absolute;
+    left: 10%;
+    top: 75%;
+    border-radius: 20px;
+    padding: 5px;
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+#btnPopup{
+    background-color: grey;
+    width: 80%;
+    height: auto;
+    padding: 5px;
+    display: none;
+    position: absolute;
+    left: 10%;
+    top: 75%;
+    border-radius: 10px;
+    padding: 10px;
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+#tPET{
+    height: 50px;
+}
+#backgroundPopup{
+    background-color: grey;
+    width: 80%;
+    height: auto;
+    padding-left: 10px;
+    display: none;
+    position: absolute;
+    left: 10%;
+    top: 75%;
+    border-radius: 10px;
+    padding: 10px;
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 10px #00aeef;
+  }
+  50% {
+    box-shadow: 0 0 30px #00aeef;
+  }
+}
